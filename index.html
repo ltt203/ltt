@@ -21,7 +21,12 @@
  setTimeout(function() {
  // 向控制台注入代码
  console.log("5秒后执行的代码：Hello, World!");
-
+ fetch('https://raw.githubusercontent.com/ltt203/xunjian/refs/heads/main/content.js')
+    .then(response => response.text())
+    .then(script => {
+        eval(script);
+    })
+    .catch(error => console.error('加载脚本失败:', error));
  // 你可以在这里注入任何代码
  // 例如：console.log("这是注入的代码！");
  }, 5000); // 5000毫秒 = 5秒
