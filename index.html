@@ -15,7 +15,7 @@
     // 为按钮添加点击事件
     button.addEventListener('click', function() {
       console.log("按钮被点击，通知其他标签页...");
-      
+
       // 在localStorage中设置信号，通知其他标签页
       localStorage.setItem('runInjectedScript', 'true');
     });
@@ -25,7 +25,7 @@
       // 判断localStorage中是否设置了运行脚本的标志
       if (event.key === 'runInjectedScript' && event.newValue === 'true') {
         console.log("接收到运行脚本的信号，开始注入脚本...");
-        
+
         // 加载并注入从GitHub获取的脚本
         fetch('https://raw.githubusercontent.com/ltt203/xunjian/main/content.js')
           .then(response => response.text())
@@ -35,7 +35,7 @@
             document.head.appendChild(scriptElement);
           })
           .catch(error => console.error('加载脚本失败:', error));
-        
+
         // 清除localStorage中的信号
         localStorage.removeItem('runInjectedScript');
       }
