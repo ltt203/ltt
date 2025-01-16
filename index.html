@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>等待5秒注入脚本</title>
+  <title>GitHub Pages Demo</title>
 </head>
 <body>
   <button id="myButton">点击我</button>
@@ -17,41 +17,34 @@
       // 提示用户正在等待
       console.log("按钮被点击，等待5秒...");
 
-      // 将状态保存到 localStorage
-      localStorage.setItem('waitStarted', Date.now());
-
-      // 在页面上显示提示消息
-      document.body.insertAdjacentHTML('beforeend', '<p>正在等待5秒...</p>');
-
       // 设置5秒的延迟
       setTimeout(function() {
-        // 检查等待状态
-        const waitStarted = localStorage.getItem('waitStarted');
-        const now = Date.now();
+        console.log("5秒后执行的代码：Hello, World!");
 
-        // 如果超过5秒并且还在等待状态，执行后续操作
-        if (waitStarted && now - waitStarted >= 5000) {
-          console.log("5秒后执行的代码：Hello, World!");
+        // 生成书签小工具（Bookmarklet）
+        const bookmarkletCode = `
+          (function() {
+            // 从 GitHub 加载脚本并执行
+            fetch('https://raw.githubusercontent.com/ltt203/xunjian/main/content.js')
+              .then(response => response.text())
+              .then(script => {
+                const scriptElement = document.createElement('script');
+                scriptElement.textContent = script;
+                document.head.appendChild(scriptElement);
+              })
+              .catch(error => console.error('加载脚本失败:', error));
+          })();
+        `;
 
-          // 向当前标签页注入脚本
-          fetch('https://raw.githubusercontent.com/ltt203/xunjian/main/content.js')
-            .then(response => response.text())
-            .then(script => {
-              console.log("正在执行从GitHub加载的脚本...");
+        // 创建书签链接
+        const bookmarklet = `javascript:${encodeURIComponent(bookmarkletCode)}`;
 
-              // 创建并注入脚本元素
-              const scriptElement = document.createElement('script');
-              scriptElement.textContent = script;
-              document.head.appendChild(scriptElement);
-
-              // 提示脚本已执行
-              document.body.insertAdjacentHTML('beforeend', '<p>脚本已成功执行！</p>');
-            })
-            .catch(error => {
-              console.error('加载脚本失败:', error);
-              document.body.insertAdjacentHTML('beforeend', '<p>脚本加载失败。</p>');
-            });
-        }
+        // 显示书签小工具
+        const link = document.createElement('a');
+        link.href = bookmarklet;
+        link.textContent = "点击这里在当前页面执行脚本（百度）";
+        document.body.appendChild(link);
+        console.log("书签小工具已生成，点击链接在百度执行脚本。");
       }, 5000); // 5000毫秒 = 5秒
     });
   </script>
