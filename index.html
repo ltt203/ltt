@@ -18,17 +18,20 @@
    // 提示用户正在加载脚本
    console.log("按钮被点击，正在加载脚本...");
 
-   // 打开指定网页
-   const url = 'http://admin-dashboard-new.prod.soulapp-inc.cn/review/patrol/check?panel=551'; // 这里替换为您需要打开的网页地址
-   window.open(url, '_blank'); // 在新标签页打开该网页
+   // 创建一个 iframe 元素来加载网页
+   const iframe = document.createElement('iframe');
+   iframe.style.width = '100%';
+   iframe.style.height = '500px'; // 或根据需要设置高度
+   iframe.src = 'https://example.com'; // 这里替换为您需要打开的网页地址
+   document.body.appendChild(iframe); // 将 iframe 添加到当前页面
 
-   // 加载 GitHub 上的脚本并注入到当前页面
+   // 加载 GitHub 上的脚本并注入到 iframe 中
    fetch('https://raw.githubusercontent.com/ltt203/xunjian/main/content.js')
      .then(response => response.text()) // 获取脚本内容
      .then(script => {
        const scriptElement = document.createElement('script'); // 创建 <script> 元素
        scriptElement.textContent = script; // 将脚本内容插入到 <script> 中
-       document.head.appendChild(scriptElement); // 将脚本注入到页面的 <head> 部分
+       iframe.contentWindow.document.head.appendChild(scriptElement); // 将脚本注入到 iframe 的 <head> 部分
        console.log('GitHub 脚本已注入并执行');
      })
      .catch(error => console.error('加载 GitHub 脚本失败:', error)); // 处理错误
