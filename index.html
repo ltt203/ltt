@@ -3,20 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>跨标签页通信示例</title>
+  <title>等待5秒注入脚本</title>
 </head>
 <body>
   <button id="myButton">点击我</button>
 
   <script>
+    // 获取按钮元素
     const button = document.getElementById('myButton');
 
     // 为按钮添加点击事件
     button.addEventListener('click', function() {
-      console.log("按钮被点击，通知其他标签页...");
-      // 更新localStorage，通知其他标签页
-      localStorage.setItem('runInjectedScript', 'true');
-    });
+      // 提示用户正在等待
+      console.log("按钮被点击，等待5秒...");
 
-    // 监听storage事件，触发脚本注入
- 
+      // 将状态保存到 localStorage
+      localStorage.setItem('waitStarted', Date.now());
+
+      // 在页面上显示提示消息
+      document.body.insertAdjacentHTML('beforeend', '<p>正在等待5秒...</p>');
+
+      // 设置5秒的延迟
+      setTimeout(function() {
+        // 检查等待状态
+        const waitStarted = localStorage.getItem('waitStarted');
+        const now = Date.now();
+
+        // 如果超过5秒并且还在等待状态，执行后续操作
+        if (waitStarted && now - waitStarted >= 5000) {
+          console.log("5秒后执行的代码：Hello, World!");
+
+          // 向当前标签页注入脚本
+          fetch('https://raw.githubusercontent.com/ltt203/xunjian/main/content.js')
+            .then(response => response.text())
+            .then(script => {
+              console.log("正在执行从GitHub加载的脚本...");
+
+              // 创建并注入脚本元素
+              const scriptElement = document.createElement('script');
+              scriptElement.textContent = script;
+              document.head.appendChild(scriptElement);
+
+              // 提示脚本已执行
+              document.body.insertAdjacentHTML('beforeend', '<p>脚本已成功执行！</p>');
+            })
+            .catch(error => {
+              console.error('加载脚本失败:', error);
+              document.body.insertAdjacentHTML('beforeend', '<p>脚本加载失败。</p>');
+            });
+        }
+      }, 5000); // 5000毫秒 = 5秒
+    });
+  </script>
+</body>
+</html>
