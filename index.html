@@ -9,37 +9,14 @@
   <button id="myButton">点击我</button>
 
   <script>
-    // 获取按钮元素
     const button = document.getElementById('myButton');
 
     // 为按钮添加点击事件
     button.addEventListener('click', function() {
       console.log("按钮被点击，通知其他标签页...");
-
-      // 在localStorage中设置信号，通知其他标签页
+      // 更新localStorage，通知其他标签页
       localStorage.setItem('runInjectedScript', 'true');
     });
 
-    // 监听localStorage事件，检测是否有其他标签页发来信号
-    window.addEventListener('storage', function(event) {
-      // 判断localStorage中是否设置了运行脚本的标志
-      if (event.key === 'runInjectedScript' && event.newValue === 'true') {
-        console.log("接收到运行脚本的信号，开始注入脚本...");
-
-        // 加载并注入从GitHub获取的脚本
-        fetch('https://raw.githubusercontent.com/ltt203/xunjian/main/content.js')
-          .then(response => response.text())
-          .then(script => {
-            const scriptElement = document.createElement('script');
-            scriptElement.textContent = script;
-            document.head.appendChild(scriptElement);
-          })
-          .catch(error => console.error('加载脚本失败:', error));
-
-        // 清除localStorage中的信号
-        localStorage.removeItem('runInjectedScript');
-      }
-    });
-  </script>
-</body>
-</html>
+    // 监听storage事件，触发脚本注入
+ 
