@@ -1,52 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GitHub Pages Demo</title>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>GitHub 脚本注入</title>
 </head>
 <body>
-  <button id="myButton">点击我</button>
+ <h1>点击按钮注入 GitHub 脚本并打开网页</h1>
+ <button id="injectButton">点击我</button>
 
-  <script>
-    // 获取按钮元素
-    const button = document.getElementById('myButton');
+ <script>
+ // 获取按钮元素
+ const button = document.getElementById('injectButton');
 
-    // 为按钮添加点击事件
-    button.addEventListener('click', function() {
-      // 提示用户正在等待
-      console.log("按钮被点击，等待5秒...");
+ // 为按钮添加点击事件
+ button.addEventListener('click', function() {
+   // 提示用户正在加载脚本
+   console.log("按钮被点击，正在加载脚本...");
 
-      // 设置5秒的延迟
-      setTimeout(function() {
-        console.log("5秒后执行的代码：Hello, World!");
+   // 打开指定网页
+   const url = 'http://admin-dashboard-new.prod.soulapp-inc.cn/review/patrol/check?panel=551'; // 这里替换为您需要打开的网页地址
+   window.open(url, '_blank'); // 在新标签页打开该网页
 
-        // 生成书签小工具（Bookmarklet）
-        const bookmarkletCode = `
-          (function() {
-            // 从 GitHub 加载脚本并执行
-            fetch('https://raw.githubusercontent.com/ltt203/xunjian/main/content.js')
-              .then(response => response.text())
-              .then(script => {
-                const scriptElement = document.createElement('script');
-                scriptElement.textContent = script;
-                document.head.appendChild(scriptElement);
-              })
-              .catch(error => console.error('加载脚本失败:', error));
-          })();
-        `;
-
-        // 创建书签链接
-        const bookmarklet = `javascript:${encodeURIComponent(bookmarkletCode)}`;
-
-        // 显示书签小工具
-        const link = document.createElement('a');
-        link.href = bookmarklet;
-        link.textContent = "点击这里在当前页面执行脚本（百度）";
-        document.body.appendChild(link);
-        console.log("书签小工具已生成，点击链接在百度执行脚本。");
-      }, 5000); // 5000毫秒 = 5秒
-    });
-  </script>
+   // 加载 GitHub 上的脚本并注入到当前页面
+   fetch('https://raw.githubusercontent.com/ltt203/xunjian/main/content.js')
+     .then(response => response.text()) // 获取脚本内容
+     .then(script => {
+       const scriptElement = document.createElement('script'); // 创建 <script> 元素
+       scriptElement.textContent = script; // 将脚本内容插入到 <script> 中
+       document.head.appendChild(scriptElement); // 将脚本注入到页面的 <head> 部分
+       console.log('GitHub 脚本已注入并执行');
+     })
+     .catch(error => console.error('加载 GitHub 脚本失败:', error)); // 处理错误
+ });
+ </script>
 </body>
 </html>
