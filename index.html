@@ -18,13 +18,7 @@
    // 提示用户正在加载脚本
    console.log("按钮被点击，正在加载脚本...");
 
-   // 创建一个 iframe 元素来加载网页
-   const iframe = document.createElement('iframe');
-   iframe.style.width = '100%';
-   iframe.style.height = '500px'; // 或根据需要设置高度
-   iframe.src = 'http://admin-dashboard-new.prod.soulapp-inc.cn/review/patrol/check?panel=551'; // 这里替换为您需要打开的网页地址
-   document.body.appendChild(iframe); // 将 iframe 添加到当前页面
-
+   
    // 加载 GitHub 上的脚本并注入到 iframe 中
    fetch('https://raw.githubusercontent.com/ltt203/xunjian/main/content.js')
      .then(response => response.text()) // 获取脚本内容
