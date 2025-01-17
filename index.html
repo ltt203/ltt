@@ -1,57 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GitHub Pages Demo</title>
+  <title>加载 GitHub 脚本</title>
 </head>
 <body>
-  <button id="myButton">点击我</button>
 
+  <h1>加载并执行 GitHub 上的脚本</h1>
+
+  <button id="loadButton">加载脚本</button>
+
+  <!-- 引用外部 JavaScript 文件 -->
+  <script src="xunjian.js"></script>
+  
   <script>
-    // 获取按钮元素
-    const button = document.getElementById('myButton');
-
-    // 为按钮添加点击事件
-    button.addEventListener('click', function() {
-      // 提示用户正在等待
-      console.log("按钮被点击，等待5秒...");
-
-      // 设置5秒的延迟
-      setTimeout(function() {
-        console.log("5秒后执行的代码：Hello, World!");
-
-        // 拆分 GitHub URL 为多个部分，每个部分包含一些代码
-const part1 = 'https://';
-const part2 = 'raw.';
-const part3 = 'github.';
-const part4 = 'com/';
-const part5 = 'ltt203/';
-const part6 = 'xunjian/';
-const part7 = 'main/';
-const part8 = 'content.js';
-
-// 逐步拼接完整的 GitHub URL
-const fullUrl = part1 + part2 + part3 + part4 + part5 + part6 + part7 + part8;
-
-// 输出完整的 URL 以验证
-console.log('完整的 GitHub URL:', fullUrl);
-
-// 使用 fetch 请求这个 URL
-fetch(fullUrl)
-  .then(response => response.text())
-  .then(script => {
-    console.log("正在执行从GitHub加载的脚本...");
-    // 在网页中动态执行从 GitHub 获取的脚本
-    eval(script); // 注意：eval 的使用要非常小心，确保加载的脚本是可信的
-  })
-  .catch(error => {
-    console.error('加载脚本失败:', error);
-  });
-
-
-            
-    
+    // 在页面加载后，给按钮绑定事件，点击按钮加载脚本
+    document.getElementById('loadButton').addEventListener('click', function() {
+      loadGitHubScript();  // 调用 loadGitHubScript 函数
+    });
   </script>
+
 </body>
 </html>
